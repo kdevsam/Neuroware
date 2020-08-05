@@ -4,6 +4,10 @@ const mongoose = require('mongoose');
 
 const app = express();
 
+
+// Then
+app.use("/public", express.static(__dirname + '/public'));
+
 // DB Config
 const db = require('./config/keys').MongoURI;
 
@@ -15,6 +19,7 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true})
 // ejs
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
+
 
 // BodyParser
 app.use(express.urlencoded({ extended: false }));
