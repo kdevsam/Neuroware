@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -20,19 +21,41 @@ namespace Client
     {
 
         int power = 0;
+        string charging = "N";
+        int systemNumber = 0;
         Thread db;
         public Form1()
         {
             InitializeComponent();
         }
 
+        private int getSysNum()
+        {
+            string path = Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)).FullName;
+            if (Environment.OSVersion.Version.Major >= 6)
+            {
+                path = Directory.GetParent(path).ToString();
+                path += "\\Documents\\Neuroware\\sys.ini";
+                string text = System.IO.File.ReadAllText(@path);
+                int sysNum = Int32.Parse(text);
+                return sysNum;
+            }
+            else
+            {
+                return 0;
+            }
+            
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
+            systemNumber = getSysNum();
             Thread battery = new Thread(ShowPowerStatus);
-            battery.IsBackground = true;
+           
             battery.Start();
             db = new Thread(MongoDB);
             db.IsBackground = true;
+            db.Start();
         }
         private void Form1_Resize(object sender, EventArgs e)
         {
@@ -65,16 +88,21 @@ namespace Client
                 if (chargerPlugged.Equals("Online"))
                 {
                     charger.Invoke(new MethodInvoker(delegate { charger.Text = "SYS is Plugged In"; }));
+                    charging = "Y";
+                }
+                else
+                {
+                    charging = "N";
                 }
                 if(progressBar1.Value != pbarCount)
                 {
                     progressBar1.Invoke(new MethodInvoker(delegate { progressBar1.Value = pbarCount; }));
-                    db.Start();
+                    
 
                 }
                 else
                 {
-                    Thread.Sleep(10000);
+                    Thread.Sleep(1000);
                 }
 
             }
@@ -89,11 +117,17 @@ namespace Client
             //var filter = Builders<BsonDocument>.Filter.Eq("sys_id", 2);
             //var update = Builders<BsonDocument>.Update.Set("sys_id", 3);
             //collection.UpdateOne(filter, update);
+            while (true)
+            {
 
-            var arrayFilter = Builders<BsonDocument>.Filter.Eq("sys_id", 3) & Builders<BsonDocument>.Filter.Eq("Battery.type", "Percent");
-            var arrayUpdate = Builders<BsonDocument>.Update.Set("Battery.$.life", power);
-            collection.UpdateOne(arrayFilter, arrayUpdate);
+                var arrayFilter = Builders<BsonDocument>.Filter.Eq("sys_id", systemNumber);
+                var lifeUpdate = Builders<BsonDocument>.Update.Set("life", power);
+                var chargerUpdate = Builders<BsonDocument>.Update.Set("charging", charging);
+                collection.UpdateOne(arrayFilter, lifeUpdate);
+                collection.UpdateOne(arrayFilter, chargerUpdate);
 
+                Thread.Sleep(5000);
+            }
         }
     }
 }

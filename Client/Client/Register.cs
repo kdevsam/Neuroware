@@ -59,13 +59,8 @@ namespace Client
             MongoClient dbClient = new MongoClient("mongodb+srv://user12:9e5XiHWyawGF671n@cluster0.nde7k.mongodb.net/test?retryWrites=true&w=majority");
             var database = dbClient.GetDatabase("test");
             var collection = database.GetCollection<BsonDocument>("Systems");
-            var newSYS = new BsonDocument { { "sys_id", sysNum }, {
-                "battery",
-                new BsonArray {
-                new BsonDocument {{ "life", 0 } },
-                new BsonDocument {{ "charging", "N" }},
-                }
-                }
+            var newSYS = new BsonDocument { { "sys_id", sysNum }, { "life", 0 }, { "charging", "N" } 
+                
         };
             collection.InsertOne(newSYS);
         }
