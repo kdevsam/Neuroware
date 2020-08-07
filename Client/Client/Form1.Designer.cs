@@ -28,9 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.batCharge = new System.Windows.Forms.Label();
             this.charger = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.SuspendLayout();
             // 
             // batCharge
@@ -58,6 +61,12 @@
             this.progressBar1.Size = new System.Drawing.Size(125, 37);
             this.progressBar1.TabIndex = 2;
             // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "notifyIcon1";
+            this.notifyIcon1.Visible = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -66,7 +75,9 @@
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.charger);
             this.Controls.Add(this.batCharge);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Neuroware Client";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
@@ -79,6 +90,7 @@
         private System.Windows.Forms.Label batCharge;
         private System.Windows.Forms.Label charger;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.NotifyIcon notifyIcon1;
     }
 }
 
