@@ -111,7 +111,7 @@ namespace Client
 
         private void MongoDB()
         {
-            MongoClient dbClient = new MongoClient("mongodb+srv://user12:9e5XiHWyawGF671n@cluster0.nde7k.mongodb.net/test?retryWrites=true&w=majority");
+            MongoClient dbClient = new MongoClient("");
             var database = dbClient.GetDatabase("test");
             var collection = database.GetCollection<BsonDocument>("Systems");
             //var filter = Builders<BsonDocument>.Filter.Eq("sys_id", 2);
