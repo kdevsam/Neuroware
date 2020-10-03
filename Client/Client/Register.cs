@@ -38,7 +38,7 @@ namespace Client
 
         private bool checkSysExistence(int sysNum)
         {
-            MongoClient dbClient = new MongoClient("mongodb+srv://user12:9e5XiHWyawGF671n@cluster0.nde7k.mongodb.net/test?retryWrites=true&w=majority");
+            MongoClient dbClient = new MongoClient("");
             var database = dbClient.GetDatabase("test");
             var collection = database.GetCollection<BsonDocument>("Systems");
             var arrayFilter = Builders<BsonDocument>.Filter.Eq("sys_id", sysNum);
@@ -56,7 +56,7 @@ namespace Client
 
         private void writeNewSysToDB(int sysNum)
         {
-            MongoClient dbClient = new MongoClient("mongodb+srv://user12:9e5XiHWyawGF671n@cluster0.nde7k.mongodb.net/test?retryWrites=true&w=majority");
+            MongoClient dbClient = new MongoClient("");
             var database = dbClient.GetDatabase("test");
             var collection = database.GetCollection<BsonDocument>("Systems");
             var newSYS = new BsonDocument { { "sys_id", sysNum }, { "life", 0 }, { "charging", "N" } 
